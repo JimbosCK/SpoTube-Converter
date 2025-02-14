@@ -1,9 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const SpotifyWebApi = require('spotify-web-api-node');
-const { google } = require('googleapis');
 const cors = require('cors');
-require('dotenv').config(); 
+require('dotenv').config();
 console.log("Dotenv loaded");
 const config = require('./config');
 const ApiHelper = require('./src/utils/api-helper');
@@ -13,7 +12,7 @@ const app = express();
 const port = config.serverApiUrl.substring(config.serverApiUrl.lastIndexOf(":") + 1);
 
 
-app.use(bodyParser.json({ limit: '50mb' })); 
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 console.log("Starting server...");
@@ -34,88 +33,26 @@ app.get('/youtube/callback', (req, res) => {
 });
 
 
-const spotifyApi = new SpotifyWebApi({
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-    redirectUri: process.env.SPOTIFY_REDIRECT_URL
-});
-
-
 app.get('/spotify/login', (req, res) => {
-    const scopes = ['user-read-private', 'playlist-read-private'];
-    res.redirect(spotifyApi.createAuthorizeURL(scopes));
+    res.redirect(apiHelper.generateSpotifyAuthUrl());
 });
 
 app.get('/spotify/callback', (req, res) => {
-    const error = req.query.error;
-    const code = req.query.code;
-
-    if (error) {
-        console.error("Error: ", error);
-        res.send("Error: ${error}");
-        return;
-    }
-
-    spotifyApi.authorizationCodeGrant(code).then(
-        data => {
-            const accessToken = data.body['access_token'];
-            const refreshToken = data.body['refresh_token'];
-            const expiresIn = data.body['expires_in'];
-
-            spotifyApi.setAccessToken(accessToken);
-            spotifyApi.setRefreshToken(refreshToken);
-
-            res.redirect(config.homepageURL);
-
-            setInterval(async () => {
-                console.log("REFRESHING TOKEN");
-                const data = await spotifyApi.refreshAccessToken();
-                const accessTokenRefreshed = data.body['access_token'];
-                spotifyApi.setAccessToken(accessTokenRefreshed);
-            }, expiresIn / 2 * 1000);
-            console.log
-        }).catch(error => {
-            console.error('Error', error);
-            res.send('Error getting token');
-        });
+    apiHelper.spotifyCredentials(req, res)
 });
 
 app.get('/playlists', (req, res) => {
-
-    spotifyApi.getUserPlaylists()
-        .then(function (data) {
-            res.json(data.body);
-        }, function (err) {
-            console.log('Error: Failed fetching playlists!', err);
-            res.status(500).send('Error fetching playlists.');
-        });
+    apiHelper.getSpotifyPlaylists(res);
 });
 
 
 app.get('/tracks', (req, res) => {
-    const playlistId = req.query.playlistId;
-    const offset = parseInt(req.query.offset) || 0;
-    const limit = 100;
-    spotifyApi.getPlaylistTracks(playlistId, {
-        fields: 'items',
-        limit: limit,
-        offset: offset * limit
-
-    })
-        .then(
-            function (data) {
-                res.json(data.body);
-            },
-            function (err) {
-                console.log('Error: Failed fetching tracks!', err);
-                res.status(500).send('Error fetching tracks.');
-            }
-        );
+    apiHelper.getSpotifyTracks(req, res);
 });
 
 app.post('/transfer', async (req, res) => {
     var { playlistName, spotifyTracks, offset } = req.body;
-    //const auth = oauth2Client;
+
     console.log("Starting transfer...");
 
     if (playlistName === undefined) {
@@ -164,7 +101,7 @@ app.post('/transfer', async (req, res) => {
             (
                 (Array.isArray(error.response.data.error.errors) &&
                     error.response.data.error.errors.some(err => err.reason === 'quotaExceeded')) ||
-                (typeof error.response.data.error === 'object' && 
+                (typeof error.response.data.error === 'object' &&
                     error.response.data.error.reason === 'quotaExceeded')
             )) {
             return res.status(429).json({ error: "YouTube API quota exceeded. Please try again later." });

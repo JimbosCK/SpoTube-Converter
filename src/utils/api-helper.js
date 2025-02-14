@@ -1,4 +1,5 @@
 const { google } = require('googleapis');
+const SpotifyWebApi = require('spotify-web-api-node');
 
 class ApiHelper {
     constructor(config) {
@@ -6,12 +7,12 @@ class ApiHelper {
 
     }
 
-    setup(){
+    setup() {
         this.spotifySetup();
         this.youtubeSetup();
     }
 
-    youtubeSetup(){
+    youtubeSetup() {
         this.oauth2Client = new google.auth.OAuth2(
             process.env.YOUTUBE_CLIENT_ID,
             process.env.YOUTUBE_CLIENT_SECRET,
@@ -22,15 +23,95 @@ class ApiHelper {
         this.youtubeScopes = ['https://www.googleapis.com/auth/youtube']; // Add other scopes as needed
     }
 
-    spotifySetup(){
-        console.log("soit");
+    spotifySetup() {
+        this.spotifyApi = new SpotifyWebApi({
+            clientId: process.env.SPOTIFY_CLIENT_ID,
+            clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+            redirectUri: process.env.SPOTIFY_REDIRECT_URL
+        });
     }
 
     // Sporify Methods
+    generateSpotifyAuthUrl() {
+        const scopes = ['user-read-private', 'playlist-read-private'];
+        return this.spotifyApi.createAuthorizeURL(scopes);
+    }
 
+    spotifyCredentials(req, res) {
+        const error = req.query.error;
+        const code = req.query.code;
+
+        if (error) {
+            console.error("Error: ", error);
+            res.send("Error: ${error}");
+            return;
+        }
+
+        this.spotifyApi.authorizationCodeGrant(code).then(
+            data => {
+                const accessToken = data.body['access_token'];
+                const refreshToken = data.body['refresh_token'];
+                const expiresIn = data.body['expires_in'];
+
+                this.spotifyApi.setAccessToken(accessToken);
+                this.spotifyApi.setRefreshToken(refreshToken);
+
+                res.redirect(this.config.homepageURL);
+
+                setInterval(async () => {
+                    console.log("REFRESHING TOKEN");
+                    const data = await this.spotifyApi.refreshAccessToken();
+                    const accessTokenRefreshed = data.body['access_token'];
+                    this.spotifyApi.setAccessToken(accessTokenRefreshed);
+                }, expiresIn / 2 * 1000);
+                console.log
+            }).catch(error => {
+                console.error('Error', error);
+                res.send('Error getting token');
+            });
+    }
+
+    getSpotifyPlaylists(res) {
+        this.spotifyApi.getUserPlaylists()
+            .then(function (data) {
+                res.json(data.body);
+            }, function (err) {
+                console.log('Error: Failed fetching playlists!', err);
+                res.status(500).send('Error fetching playlists.');
+            });
+    }
+
+    getSpotifyTracks(req, res) {
+        const playlistId = req.query.playlistId;
+        const offset = parseInt(req.query.offset) || 0;
+        const limit = 100;
+        this.spotifyApi.getPlaylistTracks(playlistId, {
+            fields: 'items',
+            limit: limit,
+            offset: offset * limit
+
+        })
+            .then(
+                function (data) {
+                    res.json(data.body);
+                },
+                function (err) {
+                    console.log('Error: Failed fetching tracks!', err);
+                    res.status(500).send('Error fetching tracks.');
+                }
+            );
+    }
 
     // Youtube Methods
-    youtubeCredentials(req, res){
+    generateYTAuthUrl() {
+        return this.oauth2Client.generateAuthUrl({
+            access_type: 'offline', // Important for refresh tokens
+            scope: this.youtubeScopes,
+
+        });
+    }
+
+    youtubeCredentials(req, res) {
         const code = req.query.code;
 
         this.oauth2Client.getToken(code, (err, token) => {
@@ -38,20 +119,12 @@ class ApiHelper {
                 console.error('Error getting YouTube tokens:', err);
                 return res.status(500).send('Error getting tokens');
             }
-    
+
             // (This is NOT secure for production)
             this.youtubeTokens = token;
             this.oauth2Client.setCredentials(token);
-    
-            res.redirect(this.config.homepageURL);
-        });
-    }
 
-    generateYTAuthUrl(){
-        return this.oauth2Client.generateAuthUrl({
-            access_type: 'offline', // Important for refresh tokens
-            scope: this.youtubeScopes,
-    
+            res.redirect(this.config.homepageURL);
         });
     }
 
