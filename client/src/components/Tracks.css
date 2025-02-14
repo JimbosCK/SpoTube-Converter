@@ -1,0 +1,238 @@
+/* Tracks.css */
+.tracks-container {
+    padding: 2rem;
+    /* Increased padding */
+    background-color: #f4f4f4;
+    /* Light gray background */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+    font-family: sans-serif;
+    /* Modern font */
+}
+
+.tracks-title {
+    font-size: 2.5rem;
+    /* Larger title */
+    margin-bottom: 1.5rem;
+    color: #333;
+    /* Darker title color */
+    text-align: center;
+    /* Center the title */
+}
+
+.tracks-list {
+    list-style-type: decimal;
+    /* Remove bullet points */
+    padding: 0;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.track-item {
+    padding: 1.3rem;
+    /* Increased padding for each item */
+    margin-bottom: 1rem;
+    background-color: #fff;
+    /* White background for items */
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Item shadow */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* Smooth transition */
+    display: flex;
+    /* Use flexbox for layout */
+    align-items: center;
+    /* Vertically center content */
+    padding: 10px 10px;
+    /* Adjust vertical padding if needed */
+
+}
+
+.track-item::marker {
+    /* Style the number itself */
+    font-weight: bold;
+    color: #333;
+    /* Example: Darker color for numbers */
+}
+
+.track-item:hover {
+    transform: translateY(-2px);
+    /* Slight lift on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    /* More prominent shadow */
+}
+
+.track-name {
+    margin-left: 1rem;
+    font-weight: 500;
+    /* Slightly less bold name */
+    margin-right: 0.5rem;
+}
+
+.track-artist {
+    color: #777;
+    /* Lighter artist color */
+}
+
+/* Responsive adjustments (example) */
+@media (max-width: 768px) {
+    .tracks-container {
+        padding: 1.5rem;
+    }
+
+    .tracks-title {
+        font-size: 2rem;
+    }
+
+    .track-item {
+        padding: 1rem;
+        flex-direction: column;
+        /* Stack name and artist vertically */
+        align-items: flex-start;
+    }
+
+    .back-button {
+        font-size: 1rem;
+        padding: 0.6rem 1.2rem;
+    }
+}
+
+
+/* Tracks.css */
+.tracks-buttons {
+    display: flex;
+    /* Arrange buttons horizontally */
+    gap: 10px;
+    /* Space between buttons */
+    margin-bottom: 20px;
+    align-items: center;
+    /* Vertically align items */
+
+}
+
+.tracks-buttons button,
+.tracks-buttons input {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.offset-input {
+    width: 60px;
+    /* Adjust width as needed */
+    text-align: center;
+    /* Center the number in the input */
+    border: 1px solid #ccc;
+    /* Add a border */
+}
+
+.back-button {
+    background-color: #007bff;
+    /* Blue */
+    color: white;
+}
+
+.transfer-button {
+    background-color: #b31b16;
+    /* Green */
+    color: white;
+}
+
+.pagination-buttons {
+    display: flex;
+    justify-content: center;
+    /* Center the buttons */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    /* Space above the buttons */
+    gap: 10px;
+    /* Space between buttons */
+}
+
+.pagination-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    background-color: #007bff;
+    /* Blue */
+    color: white;
+    transition: background-color 0.3s ease;
+    /* Smooth transition for hover effect */
+}
+
+.pagination-buttons button:hover {
+    background-color: #0056b3;
+    /* Darker blue on hover */
+}
+
+.pagination-buttons button:disabled {
+    background-color: #cccccc;
+    /* Grayed out when disabled */
+    cursor: default;
+    /* Default cursor when disabled */
+}
+
+.pagination-buttons button:disabled:hover {
+    /* Prevent hover effect when disabled */
+    background-color: #cccccc;
+}
+
+.offset-container {
+    display: flex;
+    align-items: center;
+    /* Vertically align label and input */
+    gap: 0.5rem;
+    /* Space between label and input */
+    margin-bottom: 1rem;
+    /* Space below the offset container */
+}
+
+.offset-container label {
+    font-weight: bold;
+    /* Make label text bolder */
+    font-size: 1.1rem;
+    /* Adjust label font size */
+    color: #333;
+    /* Darker label color */
+}
+
+.offset-input {
+    padding: 0.4rem 0.6rem;
+    /* Add padding to input */
+    border: 1px solid #ccc;
+    /* Add border to input */
+    border-radius: 4px;
+    /* Round the input corners */
+    font-size: 1rem;
+    /* Adjust input font size */
+    width: 5rem;
+    /* Adjust width as needed */
+    appearance: none;
+    /* Remove default input styling (optional) */
+    -webkit-appearance: none;
+    /* For Safari */
+    -moz-appearance: none;
+    /* For Firefox */
+}
+
+/* Optional: Style the number input spinners */
+.offset-input::-webkit-inner-spin-button,
+.offset-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.offset-input:focus {
+    outline: none;
+    /* Remove default focus outline */
+    border-color: #007bff;
+    /* Highlight border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    /* Add a subtle shadow on focus */
+}

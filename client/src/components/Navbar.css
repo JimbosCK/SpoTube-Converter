@@ -1,0 +1,53 @@
+/* Navbar.css */
+.navbar {
+    background-color: #282c34;
+    /* Dark background */
+    color: white;
+    padding: 1rem;
+}
+
+.container {
+    /* Styles for the container div */
+    max-width: 1200px;
+    /* Set a maximum width for the container */
+    margin: 0 auto;
+    /* Center the container horizontally */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    /* Slightly larger font size */
+    font-weight: bold;
+    color: #61dafb;
+    /* Example color for the brand */
+}
+
+.navbar-links {
+    display: flex;
+    gap: 2rem;
+    /* Increased spacing between links */
+    list-style: none;
+    /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-links a {
+    /* Style for the <a> elements within the <li> */
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    /* Slightly less bold font-weight */
+    transition: color 0.3s ease;
+    /* Smooth color transition */
+}
+
+.navbar-links a:hover,
+.navbar-links a.active {
+    /* Style for hover and active states */
+    color: #61dafb;
+    /* Highlight color */
+}

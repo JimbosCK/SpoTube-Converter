@@ -1,0 +1,107 @@
+/* Login.css */
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #f8f8f8, #ffffff);
+    font-family: 'Roboto', sans-serif;
+    /* Use Roboto font */
+    padding: 3rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.intro-text {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #444;
+    max-width: 500px;
+}
+
+.intro-text h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #222;
+    font-weight: 700;
+    /* Use Roboto Bold */
+}
+
+.intro-text p {
+    font-size: 1.2rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.login-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.spotify-button,
+.youtube-button {
+    font-size: 1.3rem;
+    padding: 1.2rem 2.5rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    font-weight: 500;
+    /* Use Roboto Medium */
+}
+
+.spotify-button {
+    background: linear-gradient(to bottom, #1DB954, #19A347);
+    color: white;
+}
+
+.spotify-button:hover {
+    background: linear-gradient(to bottom, #1DB954, #158838);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.spotify-button:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.youtube-button {
+    background: linear-gradient(to bottom, #FF0000, #CC0000);
+    color: white;
+}
+
+.youtube-button:hover {
+    background: linear-gradient(to bottom, #FF0000, #AA0000);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.youtube-button:active {
+    transform: translateY(0);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive adjustments (example) */
+@media (max-width: 768px) {
+    .intro-text {
+        font-size: 1.1rem;
+    }
+
+    .login-buttons {
+        gap: 1.2rem;
+    }
+
+    .spotify-button,
+    .youtube-button {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+    }
+}
