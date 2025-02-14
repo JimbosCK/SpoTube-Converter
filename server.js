@@ -15,20 +15,12 @@ const port = config.serverApiUrl.substring(config.serverApiUrl.lastIndexOf(":") 
 app.use(bodyParser.json({ limit: '50mb' })); 
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
-const transferLimiter = rateLimit({
-    windowMs: 1000, // 1 second window
-    max: 1, // Limit each IP to 1 request per windowMs
-    message: "Too many transfer requests, please try again later.", // Optional message
-    // You can customize the headers sent in response to rate limiting.
-    headers: true,
-});
-
 console.log("Starting server...");
 app.use(cors());
 app.use(express.json());
 
 const youtube = google.youtube('v3');
-// OAuth2 client setup
+
 const oauth2Client = new google.auth.OAuth2(
     process.env.YOUTUBE_CLIENT_ID,
     process.env.YOUTUBE_CLIENT_SECRET,
@@ -40,7 +32,7 @@ app.get('/youtube/login', (req, res) => {
     const authorizeUrl = oauth2Client.generateAuthUrl({
         access_type: 'offline', // Important for refresh tokens
         scope: youtubeScopes,
-        // REMOVE STATE PARAMETER for simplification (INSECURE FOR PRODUCTION)
+
     });
     res.redirect(authorizeUrl);
 });
@@ -113,7 +105,7 @@ app.get('/playlists', (req, res) => {
 
     spotifyApi.getUserPlaylists()
         .then(function (data) {
-            res.json(data.body); // Return the playlists
+            res.json(data.body);
         }, function (err) {
             console.log('Error: Failed fetching playlists!', err);
             res.status(500).send('Error fetching playlists.');
@@ -123,7 +115,7 @@ app.get('/playlists', (req, res) => {
 
 app.get('/tracks', (req, res) => {
     const playlistId = req.query.playlistId;
-    const offset = parseInt(req.query.offset) || 0; // Get offset from query, default to 0
+    const offset = parseInt(req.query.offset) || 0;
     const limit = 100;
     spotifyApi.getPlaylistTracks(playlistId, {
         fields: 'items',
@@ -133,7 +125,7 @@ app.get('/tracks', (req, res) => {
     })
         .then(
             function (data) {
-                res.json(data.body); // Return the tracks
+                res.json(data.body);
             },
             function (err) {
                 console.log('Error: Failed fetching tracks!', err);
@@ -142,8 +134,8 @@ app.get('/tracks', (req, res) => {
         );
 });
 
-app.post('/transfer', transferLimiter, async (req, res) => {
-    var { playlistName, spotifyTracks, offset } = req.body; // Get from frontend
+app.post('/transfer', async (req, res) => {
+    var { playlistName, spotifyTracks, offset } = req.body;
     const auth = oauth2Client;
     console.log("Starting transfer...");
 
@@ -153,7 +145,7 @@ app.post('/transfer', transferLimiter, async (req, res) => {
 
     try {
         let youtubePlaylistId;
-        const existingPlaylist = await findExistingPlaylist(auth, playlistName); // New function
+        const existingPlaylist = await findExistingPlaylist(auth, playlistName);
 
         if (existingPlaylist) {
             youtubePlaylistId = existingPlaylist.id;
@@ -166,7 +158,6 @@ app.post('/transfer', transferLimiter, async (req, res) => {
             console.log("Skipping ", offset, " tracks.");
         }
 
-        // Check if offset is within the valid range (0 to spotifyTracks.length - 1)
         const maxOffset = spotifyTracks.length > 0 ? spotifyTracks.length - 1 : 0;
         offset = Math.max(0, Math.min(offset, maxOffset));
 
@@ -181,7 +172,7 @@ app.post('/transfer', transferLimiter, async (req, res) => {
             }
 
             await addVideoToPlaylist(auth, youtubePlaylistId, videoId);
-            await delay(5000); // Wait 5 seconds
+            await delay(2000); // Wait 2 seconds
             console.log('Added track: ', query);
         }
         console.log('Transfer complete!\n');
@@ -200,7 +191,7 @@ app.post('/transfer', transferLimiter, async (req, res) => {
             return res.status(429).json({ error: "YouTube API quota exceeded. Please try again later." });
         }
 
-        return res.status(500).json({ error: "A transfer error occurred." }); // Generic error
+        return res.status(500).json({ error: "A transfer error occurred." });
     }
 
 });
@@ -213,21 +204,21 @@ async function findExistingPlaylist(auth, playlistName) {
                 auth: auth,
                 part: 'id,snippet',
                 mine: true,
-                pageToken: nextPageToken // Use nextPageToken for pagination
+                pageToken: nextPageToken 
             });
 
             if (response.data.items) {
                 for (const playlist of response.data.items) {
-                    if (playlist.snippet.title === playlistName) { // Exact name comparison
-                        return playlist; // Found an exact match
+                    if (playlist.snippet.title === playlistName) { 
+                        return playlist; 
                     }
                 }
             }
 
-            nextPageToken = response.data.nextPageToken; // Get token for the next page
-        } while (nextPageToken); // Continue until no more pages
+            nextPageToken = response.data.nextPageToken;
+        } while (nextPageToken); 
 
-        return null; // No exact match found after checking all pages
+        return null;
 
     } catch (error) {
         console.error("Error finding existing playlist.");
