@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const SpotifyWebApi = require('spotify-web-api-node');
 const cors = require('cors');
 require('dotenv').config();
 console.log("Dotenv loaded");
