@@ -39,7 +39,7 @@ Have you ever wished you could easily move your carefully curated Spotify playli
     
 3. **Install server-side dependencies:**
     
-    ``Bash
+    ```Bash
     cd server
     npm install
 
