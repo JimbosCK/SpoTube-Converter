@@ -1,20 +1,22 @@
 # SpoTube Converter
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-A tool to transfer your Spotify playlists to YouTube.
+A tool to help you transfer your Spotify playlists over to YouTube.
 
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Environment Variables](#environment-variables)
+- [SpoTube Converter](#spotube-converter)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Environment Variables](#environment-variables)
 
 ## Introduction
 
 Have you ever wished you could easily move your carefully curated Spotify playlists over to YouTube?  SpoTube Converter makes this process seamless!  This application allows you to transfer your Spotify playlists, complete with track names and artist information, to YouTube, creating new playlists or adding to existing ones.
+
+Just login to your YouTube and Spotify accounts, select a playlist and tranfer your songs!
 
 ## Features
 
@@ -23,6 +25,7 @@ Have you ever wished you could easily move your carefully curated Spotify playli
 - **Existing Playlist Addition:** Add tracks from your Spotify playlists to existing YouTube playlists.
 - **Track Metadata:** Transfers track names and artist information for accurate YouTube searches.
 - **Offset/Skip Tracks:** Start the transfer from a specific track number using the offset feature.
+- **Pagination of song list:** For large playlists.
 - **User-Friendly Interface:** Simple and intuitive to use.
 
 ## Installation
@@ -30,40 +33,33 @@ Have you ever wished you could easily move your carefully curated Spotify playli
 1. **Clone the repository:**
 
    ```bash
-    git clone [https://github.com/JimbosCK/SpoTube-Converter.git](https://github.com/JimbosCK/SpoTube-Converter.git)
-   
+    git clone [https://github.com/JimbosCK/SpoTube-Converter.git](https://github.com/JimbosCK/SpoTube-Converter.git)   
 2. **Navigate to the project directory:**
 
     ```Bash
     cd SpoTube-Converter
-    
 3. **Install server-side dependencies:**
     
-    ``Bash
-    cd server
+    ```Bash
     npm install
-
 4. **Install client-side dependencies:**
 
     ```Bash
-    cd ../client
+    cd client
     npm install
-
-5. **Set up environment variables (see next section).**
+5. **Set up environment variables (see next [section](#environment-variables)).**
 
 ## Usage
 1. **Start the development server:**
 
     ```Bash
-    cd server
+    cd SpoTube-Converter // root directory
     npm start  // or node server.js
-
 2. **In a new terminal, start the React development server:**
 
     ```Bash
-    cd ../client
+    cd client
     npm start
-    
 3. **Open the application in your browser:**
 
 The application should be running at http://localhost:3000 by default.
@@ -81,7 +77,7 @@ Choose the Spotify playlist you wish to transfer.
 
 If needed you can chose to skip a number of tracks from the list.
 
-The name of the Youtube list that will be created is the same as the one selected from Spotify. If the name already exists in your playlists, it will use this instead (this has to happen so you can add more tracks to your existing playlists).
+The name of the Youtube list that will be created is the same as the one selected from Spotify. If the name already exists in your playlists, it will use this playlist instead of creating a new one (this has to happen so you can add more tracks to your existing playlists).
 
 <b>Click the "Transfer to YouTube" button.</b>
 
@@ -96,3 +92,5 @@ Create a .env file in the root directory of your project and add the following e
     SPOTIFY_REDIRECT_URI=http://localhost:8888/callback (or your redirect URI)
     HOMEPAGE_URL=http://localhost:3000
 You will need to obtain these credentials from the YouTube Developer Console and the Spotify Developer Dashboard.
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
