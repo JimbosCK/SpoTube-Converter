@@ -16,9 +16,9 @@ function Login() {
             <div className="intro-text">
                 <h1>SpoTube Converter</h1>
                 <p>Effortlessly transfer your Spotify playlists to YouTube.</p>
-                <p>Log in with your Spotify and YouTube accounts to begin.</p> {/* Updated text */}
+                <p>Log in with your Spotify and YouTube accounts to begin.</p> 
             </div>
-            <div className="login-buttons"> {/* Container for buttons */}
+            <div className="login-buttons">
                 <button
                     onClick={handleSpotifyLogin}
                     className="spotify-button"
@@ -27,7 +27,7 @@ function Login() {
                 </button>
                 <button
                     onClick={handleYoutubeLogin}
-                    className="youtube-button" // New button class
+                    className="youtube-button" 
                 >
                     Login to YouTube
                 </button>

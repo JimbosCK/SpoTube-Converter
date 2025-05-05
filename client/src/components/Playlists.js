@@ -24,13 +24,13 @@ function Playlists() {
     };
 
     return (
-        <div className="playlists-container"> {/* Apply container style */}
+        <div className="playlists-container"> 
             <h1 className="playlists-title">Your Playlists</h1>
-            <ul className="playlists-list"> {/* Apply list style */}
+            <ul className="playlists-list"> 
                 {playlists.map((playlist) => (
                     <li
                         key={playlist.id}
-                        className="playlist-item" // Apply item style
+                        className="playlist-item"
                         onClick={() => handleSelectPlaylist(playlist.id, playlist.name)}
                     >
                         {playlist.name}

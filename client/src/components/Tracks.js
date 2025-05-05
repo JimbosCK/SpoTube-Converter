@@ -26,10 +26,9 @@ function Tracks() {
             value = 0;
         }
 
-        // Keep offset within the valid range (0 to tracks.length -1)
         const maxOffset = tracks.length > 0 ? tracks.length - 1 : 0;
-        value = Math.min(value, maxOffset); // Ensure offset is not greater than max
-        value = Math.max(value, 0) // Ensure offset is not smaller than 0
+        value = Math.min(value, maxOffset);
+        value = Math.max(value, 0)
 
         setOffset(value);
     };
@@ -105,7 +104,7 @@ function Tracks() {
             </div>
             <h1 className="tracks-title">{playlistName}</h1>
             <h2 className="tracks-title">({tracks.length})</h2>
-            <div className="pagination-buttons"> {/* Pagination buttons container */}
+            <div className="pagination-buttons">
                 <button onClick={handlePrevPage} disabled={paginationOffset === 0}>
                     Previous Page
                 </button>
@@ -116,7 +115,7 @@ function Tracks() {
             <ol className="tracks-list">
                 {tracks.map((track, index) => (
                     <li key={index} className="track-item">
-                        {index + 1}. {/* Add the number here */}
+                        {index + 1}.
                         <span className="track-name">{track.track.name}</span> -&nbsp;
                         <span className="track-artist"> {track.track.artists[0].name}</span>
                     </li>

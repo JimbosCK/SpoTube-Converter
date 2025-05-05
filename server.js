@@ -87,7 +87,7 @@ app.post('/transfer', async (req, res) => {
             }
 
             await apiHelper.addVideoToPlaylist(youtubePlaylistId, videoId);
-            await delay(2000); // Wait 2 seconds
+            await delay(2000);
             console.log('Added track: ', query);
         }
         console.log('Transfer complete!\n');

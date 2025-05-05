@@ -20,7 +20,7 @@ class ApiHelper {
         );
 
         this.youtube = google.youtube('v3');
-        this.youtubeScopes = ['https://www.googleapis.com/auth/youtube']; // Add other scopes as needed
+        this.youtubeScopes = ['https://www.googleapis.com/auth/youtube'];
     }
 
     spotifySetup() {
@@ -105,7 +105,7 @@ class ApiHelper {
     // Youtube Methods
     generateYTAuthUrl() {
         return this.oauth2Client.generateAuthUrl({
-            access_type: 'offline', // Important for refresh tokens
+            access_type: 'offline',
             scope: this.youtubeScopes,
 
         });
@@ -120,7 +120,6 @@ class ApiHelper {
                 return res.status(500).send('Error getting tokens');
             }
 
-            // (This is NOT secure for production)
             this.youtubeTokens = token;
             this.oauth2Client.setCredentials(token);
 
