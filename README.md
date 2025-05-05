@@ -69,7 +69,7 @@ You can change server and client URLs from the config.js files (remeber to chang
 
 Follow the on-screen instructions to authorize the application to access your Spotify and YouTube data.
 
-![alt text](Login.PNG)
+![Login Page Image](https://github.com/user-attachments/assets/633e9830-c315-4fed-861d-a6aee88c9303)
 
 5. **Select a Spotify playlist:**
 
@@ -79,7 +79,7 @@ Choose the Spotify playlist you wish to transfer.
 
 If needed you can chose to skip a number of tracks from the list.
 
-![alt text](List.PNG)
+![Track List Image](https://github.com/user-attachments/assets/b172a4bc-3b74-44ec-a5d0-2727ae65c3e4)
 
 The name of the Youtube list that will be created is the same as the one selected from Spotify. If the name already exists in your playlists, it will use this playlist instead of creating a new one (this has to happen so you can add more tracks to your existing playlists).
 
